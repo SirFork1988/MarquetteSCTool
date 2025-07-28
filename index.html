@@ -22,14 +22,6 @@
         <label class="block font-semibold" for="phone">Phone Number (Optional)</label>
         <input type="tel" id="phone" class="w-full p-2 border rounded" />
       </div>
-      <div>
-        <label class="block font-semibold" for="suggestedEmail">Suggested Email Address</label>
-        <input type="text" id="suggestedEmail" class="w-full p-2 border rounded bg-gray-100" readonly />
-      </div>
-      <div>
-        <label class="block font-semibold" for="suggestedPassword">Suggested Password</label>
-        <input type="text" id="suggestedPassword" class="w-full p-2 border rounded bg-gray-100" readonly />
-      </div>
       <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Generate Email Info</button>
     </form>
 
@@ -37,14 +29,27 @@
       <h2 class="text-xl font-semibold mb-2">Email Details</h2>
       <p><strong>Email:</strong> <span id="outputEmail"></span></p>
       <p><strong>Password:</strong> <span id="outputPassword"></span></p>
-      <p class="text-sm text-gray-500 mt-2">Copy this information for the client and use it to create a Gmail account manually.</p>
+
+      <button onclick="copyToClipboard()" class="mt-2 bg-gray-200 px-4 py-1 rounded hover:bg-gray-300 text-sm">Copy to Clipboard</button>
+
+      <div class="mt-4">
+        <a href="https://accounts.google.com/signup" target="_blank" class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Go to Gmail Signup</a>
+      </div>
+
+      <div class="mt-4 text-sm text-gray-600">
+        <p><strong>Instructions:</strong></p>
+        <ol class="list-decimal ml-5">
+          <li>Click "Go to Gmail Signup" above.</li>
+          <li>Paste the generated email and password into the Gmail form.</li>
+          <li>Use the senior's real phone number if possible for recovery.</li>
+          <li>Print or store the credentials safely with the client.</li>
+        </ol>
+      </div>
     </div>
   </div>
 
   <script>
     const form = document.getElementById('emailForm');
-    const suggestedEmail = document.getElementById('suggestedEmail');
-    const suggestedPassword = document.getElementById('suggestedPassword');
     const outputSection = document.getElementById('output');
     const outputEmail = document.getElementById('outputEmail');
     const outputPassword = document.getElementById('outputPassword');
@@ -58,6 +63,15 @@
       return password;
     }
 
+    function copyToClipboard() {
+      const email = outputEmail.textContent;
+      const password = outputPassword.textContent;
+      const text = `Email: ${email}\nPassword: ${password}`;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copied to clipboard!');
+      });
+    }
+
     form.addEventListener('submit', function(e) {
       e.preventDefault();
 
@@ -66,11 +80,8 @@
       const email = `${firstName}.${lastName}.marquette@gmail.com`;
       const password = generatePassword();
 
-      suggestedEmail.value = email;
-      suggestedPassword.value = password;
       outputEmail.textContent = email;
       outputPassword.textContent = password;
-
       outputSection.classList.remove('hidden');
     });
   </script>
