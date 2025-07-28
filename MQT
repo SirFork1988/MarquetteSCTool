@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Setup Assistant - Marquette Senior Center</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-4 text-center">Email Setup Assistant</h1>
+    <form id="emailForm" class="space-y-4">
+      <div>
+        <label class="block font-semibold" for="firstName">First Name</label>
+        <input type="text" id="firstName" class="w-full p-2 border rounded" required />
+      </div>
+      <div>
+        <label class="block font-semibold" for="lastName">Last Name</label>
+        <input type="text" id="lastName" class="w-full p-2 border rounded" required />
+      </div>
+      <div>
+        <label class="block font-semibold" for="phone">Phone Number (Optional)</label>
+        <input type="tel" id="phone" class="w-full p-2 border rounded" />
+      </div>
+      <div>
+        <label class="block font-semibold" for="suggestedEmail">Suggested Email Address</label>
+        <input type="text" id="suggestedEmail" class="w-full p-2 border rounded bg-gray-100" readonly />
+      </div>
+      <div>
+        <label class="block font-semibold" for="suggestedPassword">Suggested Password</label>
+        <input type="text" id="suggestedPassword" class="w-full p-2 border rounded bg-gray-100" readonly />
+      </div>
+      <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Generate Email Info</button>
+    </form>
+
+    <div id="output" class="mt-6 hidden">
+      <h2 class="text-xl font-semibold mb-2">Email Details</h2>
+      <p><strong>Email:</strong> <span id="outputEmail"></span></p>
+      <p><strong>Password:</strong> <span id="outputPassword"></span></p>
+      <p class="text-sm text-gray-500 mt-2">Copy this information for the client and use it to create a Gmail account manually.</p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('emailForm');
+    const suggestedEmail = document.getElementById('suggestedEmail');
+    const suggestedPassword = document.getElementById('suggestedPassword');
+    const outputSection = document.getElementById('output');
+    const outputEmail = document.getElementById('outputEmail');
+    const outputPassword = document.getElementById('outputPassword');
+
+    function generatePassword() {
+      const chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789!@#$_';
+      let password = '';
+      for (let i = 0; i < 12; i++) {
+        password += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return password;
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById('firstName').value.trim().toLowerCase();
+      const lastName = document.getElementById('lastName').value.trim().toLowerCase();
+      const email = `${firstName}.${lastName}.marquette@gmail.com`;
+      const password = generatePassword();
+
+      suggestedEmail.value = email;
+      suggestedPassword.value = password;
+      outputEmail.textContent = email;
+      outputPassword.textContent = password;
+
+      outputSection.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
